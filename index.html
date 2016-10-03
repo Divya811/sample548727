@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>My First Angular Program</title>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-route.js"></script>
+     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+  </head>
+    <body>
+    	
+ <div class="container" ng-app="myApp" ng-controller="to-do-ctrl">
+	<header class="row" ng-model="hdr-mdl">
+		<h1 class="text-center col-lg-12 col-md-12 col-sm-12 col-xs-12">My To Do Application</h1>
+	</header>
+	<aside class="row" ng-hide="addhide">
+		<a href="#" ng-click="btnadd()" class="add pull-right">Add</a>
+	</aside>
+
+
+<!-- part1 begins -->
+<div ng-hide="btnhide">
+<section class=" first row">
+<form name="myForm">
+	<div>
+
+		<label class="col-lg-2 col-md-2 col-sm-2 col-xs-12">Task Id :</label>
+		<input  ng-model="boxid" class="box col-lg-10 col-md-10 col-sm-10 col-xs-12" type="text" name="box" required ><br>
+		<span ng-show="myForm.box.$touched && myForm.box.$invalid">Fill the field</span>
+	</div>
+	<div class="gap">
+		<label class="col-lg-2 col-md-2 col-sm-2 col-xs-12">Task Name :</label>
+		<input  type="text" ng-model="boxname" class="box col-lg-10 col-md-10 col-sm-10 col-xs-12" name="boxname" required>
+		<span ng-show="myForm.boxname.$touched && myForm.box.$invalid">Fill the field</span>
+	</div>
+	</form>
+		
+</section>
+
+<section class="row buttons">
+	<div class="text-center col-lg-6 col-md-6 col-sm-6 col-xs-6">
+	<button ng-click="addtask()" class="text-center add1 ">Add</button>
+	</div>
+	<div class="text-center col-lg-6 col-md-6 col-sm-6 col-xs-6">
+	<button ng-click="cncltask()" class=" cancel ">cancel</button>
+	</div>
+</section>
+</div>
+
+<!-- part1 closed -->
+
+<section class="row" ng-hide="tabhide">
+	<table class="table col-lg-12 col-md-12 col-sm-12 col-xs-12">
+	<thead>
+	<tr>
+		<th>#</th>
+		<th>Task Id</th>
+		<th>Task Name</th>
+		<th>Mark completed</th>
+		<th>Remove task</th>
+	</tr>
+	</thead>
+	<tbody>
+		<tr ng-repeat="selectlist in arr" ng-class="{cssname:chkmdl}">
+			<td>{{$index+1}}</td>
+			<td>{{selectlist.taskid}}</td>
+			<td>{{selectlist.taskname}}</td>
+			<td>
+				<input type="checkbox" name="c1" value="c1" ng-model="chkmdl">
+			</td>
+			<td>
+				<a href="#" ng-click="remo()" class="rmv">Remove</a>
+
+			</td>
+
+
+
+		</tr>
+
+	</tbody>
+
+		
+	</table>
+</section>
+
+
+
+<script>
+	var app=angular.module('myApp',[]);
+	app.controller('to-do-ctrl',function($scope){
+		$scope.btnhide=true;
+		$scope.addhide=false;
+		$scope.tabhide=false;
+		$scope.arr=[{
+			'taskid':100,
+			'taskname':'task1'
+		},
+		{
+			'taskid':102,
+			'taskname':'task2'
+		},
+		{
+			'taskid':103,
+			'taskname':'task3'
+		}
+		];
+		$scope.btnadd=function(){
+			$scope.btnhide=false;
+			$scope.addhide=true;
+		}
+		$scope.addtask=function(){
+			
+			$scope.tabhide=false;
+			var flag=0;
+			if ($scope.boxid!=undefined && $scope.boxid!=null && $scope.boxname!=undefined && $scope.boxname!=null) {
+			for(var i=0;i<$scope.arr.length;i++){
+				if ($scope.boxid==$scope.arr[i].taskid) {
+						flag=1;
+						alert("already exists");
+						break;	
+				}
+				else{
+					flag=0;
+				}
+			}
+		
+			if(flag==0){
+
+
+			this.arr.push({taskid:$scope.boxid,taskname:$scope.boxname});
+			$scope.boxid='';
+			$scope.boxname='';
+			}
+		}
+	}
+		$scope.cncltask=function(){
+			$scope.tabhide=true;
+			$scope.btnhide=true;
+			$scope.addhide=false;
+
+
+		}
+			$scope.remo=function($index){
+				$scope.arr.splice($index,1);
+			}
+		
+	});
+
+
+</script>
+    </body>
+
+
+ </html>
